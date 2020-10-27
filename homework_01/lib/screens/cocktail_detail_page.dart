@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:homework/models/models.dart';
 import '../services/colors.dart';
 import '../widgets/cocktail_info.dart';
+import '../widgets/ingredient_info.dart';
+import '../widgets/star.dart';
 
 class CocktailDetailPage extends StatelessWidget {
   const CocktailDetailPage(
@@ -12,15 +14,17 @@ class CocktailDetailPage extends StatelessWidget {
 
   final Cocktail cocktail;
 
+  List<String> getInstructions(String instructions) {
+    List<String> ans;
+
+    ans = instructions.split('- ');
+    ans.removeWhere((value) => value == '  ');
+
+    return ans.sublist(1);
+  }
+
   @override
   Widget build(BuildContext context) {
-    /// TODO: Сделать верстку экрана "Карточка коктейля" по модели Cocktail cocktail
-    /// Ссылка на макет
-    /// https://www.figma.com/file/d2JJUBFu7Dg0HOV30XG7Z4/OTUS-FLUTTER.-%D0%A3%D1%80%D0%BE%D0%BA-3-%D0%94%D0%97?node-id=20%3A590
-    ///для того что бы весь контент поместился, необходимо использовать SingleChildScrollView()
-    ///
-    ///
-
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -108,9 +112,83 @@ class CocktailDetailPage extends StatelessWidget {
                   ],
                 ),
               ),
-              Text('${cocktail.ingredients.toList()[0].ingredientName}'),
-              Text('${cocktail.ingredients.toList()[0].measure}'),
-              Text('${cocktail.instruction.toString()}'),
+              Container(
+                color: kIngredientsBackground,
+                padding: EdgeInsets.fromLTRB(33, 24, 33, 0),
+                child: Container(
+                  child: Text(
+                    'Ингредиенты',
+                    style: TextStyle(
+                      color: kSubheaderColor,
+                      fontSize: 19,
+                    ),
+                  ),
+                  alignment: Alignment.center,
+                ),
+              ),
+              Container(
+                color: kIngredientsBackground,
+                padding: EdgeInsets.fromLTRB(33, 24, 33, 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    for (var ingredient in cocktail.ingredients.toList())
+                      IngredientInfo(
+                          ingredient.ingredientName, ingredient.measure),
+                  ],
+                ),
+              ),
+              Container(
+                color: kInstructionBackground,
+                padding: EdgeInsets.fromLTRB(33, 24, 33, 24),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Инструкция для приготовления',
+                      style: TextStyle(
+                        fontSize: 17,
+                      ),
+                    ),
+                    Container(
+                      height: 24,
+                    ),
+                    for (String instructionItem
+                        in getInstructions(cocktail.instruction))
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("\u2022 "),
+                          Flexible(
+                            child: Text(
+                              instructionItem,
+                              style: TextStyle(
+                                fontSize: 17,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
+              ),
+              Container(
+                color: kRatingBackground,
+                padding: EdgeInsets.fromLTRB(33, 24, 33, 24),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Star(true),
+                    Star(true),
+                    Star(true),
+                    Star(false),
+                    Star(false),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

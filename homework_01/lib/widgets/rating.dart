@@ -17,12 +17,13 @@ class Rating extends StatelessWidget {
     }
     return Container(
       color: kRatingBackground,
-      padding: EdgeInsets.fromLTRB(33, 24, 33, 24),
+      padding: EdgeInsets.fromLTRB(0, 24, 0, 24),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          for (int i = 0; i < rating; i++) Star(true),
-          for (int i = 0; i < 5 - rating; i++) Star(false),
+          for (int i = 0; i < rating; i++) Flexible(flex: 1, child: Star(true)),
+          for (int i = 0; i < 5 - rating; i++)
+            Flexible(flex: 1, child: Star(false)),
         ],
       ),
     );

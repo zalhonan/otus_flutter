@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// Ингредиенты в форме таблички
+
 class IngredientInfo extends StatelessWidget {
   IngredientInfo(this.ingredName, this.ingredAmount);
 

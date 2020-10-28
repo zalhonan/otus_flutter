@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../services/colors.dart';
 
+// Информация о коктейле. Получает заголовок и описание
+
 class CocktailInfo extends StatelessWidget {
   CocktailInfo(this.title, this.description);
 

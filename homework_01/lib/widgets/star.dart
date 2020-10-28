@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../services/colors.dart';
 
+// звездочка в рейтингк. isActive true - яркая
+
 class Star extends StatelessWidget {
   bool isActive;
 

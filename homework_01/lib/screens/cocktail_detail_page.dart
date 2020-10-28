@@ -4,7 +4,7 @@ import 'package:homework/models/models.dart';
 import '../services/colors.dart';
 import '../widgets/cocktail_info.dart';
 import '../widgets/ingredient_info.dart';
-import '../widgets/star.dart';
+import '../widgets/rating.dart';
 
 class CocktailDetailPage extends StatelessWidget {
   const CocktailDetailPage(
@@ -14,12 +14,11 @@ class CocktailDetailPage extends StatelessWidget {
 
   final Cocktail cocktail;
 
+  // разделяет инструкции по приготовлению на лист пунктов для лучшего вида
   List<String> getInstructions(String instructions) {
     List<String> ans;
-
     ans = instructions.split('- ');
     ans.removeWhere((value) => value == '  ');
-
     return ans.sublist(1);
   }
 
@@ -36,15 +35,31 @@ class CocktailDetailPage extends StatelessWidget {
             children: [
               Container(
                 width: screenWidth,
-                height: screenWidth,
+                height: screenWidth * .85,
                 color: kCocktailBackground,
                 child: Stack(
                   alignment: Alignment.topCenter,
                   fit: StackFit.expand,
                   children: [
-                    Image.network(
-                      cocktail.drinkThumbUrl,
-                      fit: BoxFit.cover,
+                    Positioned(
+                      // картинка коктейля выходит за верхнюю рамку
+                      bottom: 0,
+                      width: screenWidth,
+                      child: Image.network(
+                        cocktail.drinkThumbUrl,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              kCocktailBackground.withOpacity(0.05),
+                              Colors.white.withOpacity(0.07),
+                            ]),
+                      ),
                     ),
                     Positioned(
                       top: 26,
@@ -175,20 +190,8 @@ class CocktailDetailPage extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
-                color: kRatingBackground,
-                padding: EdgeInsets.fromLTRB(33, 24, 33, 24),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Star(true),
-                    Star(true),
-                    Star(true),
-                    Star(false),
-                    Star(false),
-                  ],
-                ),
-              ),
+              // передаем количество звезд
+              Rating(3),
             ],
           ),
         ),

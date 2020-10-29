@@ -4,7 +4,7 @@ import '../services/colors.dart';
 // звездочка в рейтингк. isActive true - яркая
 
 class Star extends StatelessWidget {
-  bool isActive;
+  final bool isActive;
 
   Star(this.isActive);
 

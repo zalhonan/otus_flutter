@@ -15,16 +15,20 @@ class IngredientInfo extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            ingredName,
-            style: TextStyle(
-              fontSize: 17,
-              decoration: TextDecoration.underline,
+          Flexible(
+            child: Text(
+              ingredName,
+              style: TextStyle(
+                fontSize: 17,
+                decoration: TextDecoration.underline,
+              ),
             ),
           ),
-          Text(
-            ingredAmount,
-            style: TextStyle(fontSize: 17),
+          Flexible(
+            child: Text(
+              ingredAmount,
+              style: TextStyle(fontSize: 17),
+            ),
           ),
         ],
       ),

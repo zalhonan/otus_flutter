@@ -189,14 +189,14 @@ class AsyncCocktailRepository {
     return result;
   }
 
-  // формирует объект из DTO
+  // формирует объект из DTO. isAlcoholic на лету конвертируем в bool
   Ingredient _createIngredientFromDto(IngredientDto dto) {
     return Ingredient(
       id: dto.id,
       name: dto.name,
       description: dto.description,
       ingredientType: dto.ingredientType,
-      isAlcoholic: dto.isAlcoholic,
+      isAlcoholic: dto.isAlcoholic == "Yes" ? true : false,
     );
   }
 

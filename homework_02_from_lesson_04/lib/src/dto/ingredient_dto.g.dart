@@ -19,6 +19,6 @@ IngredientDto _$IngredientDtoFromJson(Map<String, dynamic> json) {
     name: json['strIngredient'] as String,
     description: json['strDescription'] as String,
     ingredientType: json['strType'] as String,
-    isAlcoholic: json['strAlcohol']?.toString() == 'Yes' ? true : false,
+    isAlcoholic: json['strAlcohol'] as String,
   );
 }

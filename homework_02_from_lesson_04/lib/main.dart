@@ -2,9 +2,8 @@ import 'package:cocktaildbhttpusing/src/repository/async_cocktail_repository.dar
 import 'package:flutter/material.dart';
 
 void main() async {
-  var res = await AsyncCocktailRepository().lookupIngredientById('1');
+  var res = await AsyncCocktailRepository().lookupIngredientById('40');
 
-  print("${res.toString()}");
   print("${res.name}");
   print("${res.id}");
   print("${res.ingredientType}");

@@ -5,4 +5,4 @@
 
 [Демонстрация работы](https://www.screencast.com/t/60ndRV5Eqcf7)
 
-![demo](https://github.com/zalhonan/otus_flutter/blob/master/homework_01/demo.gif)
+![demo](demo.gif)

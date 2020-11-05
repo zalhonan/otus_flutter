@@ -31,69 +31,74 @@ class _CocktailsFilterScreenState extends State<CocktailsFilterScreen> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-            color: kDescriptionBackground,
-            // основной Column, содержащий все виджеты
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SearchWindow(),
-                // крутилка выбора типа коктейля
-                Container(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        for (CocktailCategory cocktailCategory
-                            in CocktailCategory.values)
-                          GestureDetector(
-                            child: CocktailTypeLabel(
-                              cocktailCategory: cocktailCategory.value,
-                              isActive: currentCategory == cocktailCategory,
-                            ),
-                            onTap: () {
-                              setState(() {
-                                currentCategory = cocktailCategory;
-                              });
-                            },
+          color: kDescriptionBackground,
+          // основной Column, содержащий все виджеты
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SearchWindow(),
+              // крутилка выбора типа коктейля
+              Container(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      for (CocktailCategory cocktailCategory
+                          in CocktailCategory.values)
+                        GestureDetector(
+                          child: CocktailTypeLabel(
+                            cocktailCategory: cocktailCategory.value,
+                            isActive: currentCategory == cocktailCategory,
                           ),
-                      ],
-                    ),
+                          onTap: () {
+                            setState(() {
+                              currentCategory = cocktailCategory;
+                            });
+                          },
+                        ),
+                    ],
                   ),
                 ),
-                Container(
-                  height: 30,
-                ),
-                FutureBuilder(
-                  future: AsyncCocktailRepository()
-                      .fetchCocktailsByCocktailCategory(currentCategory),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if (snapshot.hasError) {
-                      return Center(
-                        child: Text('ошибка: ${snapshot.error.toString()},'),
-                      );
-                    }
+              ),
+              Container(
+                height: 30,
+              ),
+              FutureBuilder(
+                future: AsyncCocktailRepository()
+                    .fetchCocktailsByCocktailCategory(currentCategory),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text('ошибка: ${snapshot.error.toString()},'),
+                    );
+                  }
 
-                    if (snapshot.hasData) {
-                      return Column(
-                        children: [
-                          Text('${snapshot.data.length}'),
-                          Text('${snapshot.data[0].id}'),
-                          Text('${snapshot.data[0].name}'),
-                          Text('${snapshot.data[0].drinkThumbUrl}'),
+                  if (snapshot.hasData &&
+                      snapshot.connectionState != ConnectionState.waiting) {
+                    return Column(
+                      children: [
+                        Text('${snapshot.data.length}'),
+                        Text('${snapshot.data[0].id}'),
+                        Text('${snapshot.data[0].name}'),
+                        Text('${snapshot.data[0].drinkThumbUrl}'),
 //                          for (var snap in snapshot.data)
 //                            Text('${snap.toString()}')
-                        ],
-                      );
-                    }
-
-                    return Center(child: CircularProgressIndicator());
-                  },
-                ),
-              ],
-            )),
+                      ],
+                    );
+                  }
+                  return Expanded(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

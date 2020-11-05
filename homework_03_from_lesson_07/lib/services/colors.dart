@@ -10,3 +10,6 @@ const kIngredientsBackground = Colors.black;
 const kInstructionBackground = Color(0xFF201F2C);
 const kRatingBackground = Color(0xFF1A1927);
 const kStarBackground = Color(0xFF2A293A);
+const kCocktailCategoryBorder = Color(0xFF2D2C39);
+const kCocktailCategoryActive = Color(0xFF3B3953);
+const kCocktailCategoryInactive = Color(0xFF201F2C);

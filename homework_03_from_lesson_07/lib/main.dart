@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: cocktailTheme,
       home: CocktailsFilterScreen(),
+//      home: CocktailDetailBuilderRandom(),
     );
   }
 }

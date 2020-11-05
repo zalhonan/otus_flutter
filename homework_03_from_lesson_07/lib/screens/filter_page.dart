@@ -15,8 +15,17 @@ import 'package:cocktail/core/models.dart';
 import 'package:cocktail/core/src/repository/async_cocktail_repository.dart';
 import 'package:cocktail/services/colors.dart';
 import 'package:flutter/material.dart';
+import '../widgets/search_window.dart';
+import '../widgets/cocktail_type_label.dart';
 
-class CocktailsFilterScreen extends StatelessWidget {
+class CocktailsFilterScreen extends StatefulWidget {
+  @override
+  _CocktailsFilterScreenState createState() => _CocktailsFilterScreenState();
+}
+
+class _CocktailsFilterScreenState extends State<CocktailsFilterScreen> {
+  CocktailCategory currentCategory = CocktailCategory.milkFloatShake;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,14 +37,60 @@ class CocktailsFilterScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                SearchWindow(),
+                // крутилка выбора типа коктейля
                 Container(
-                  child: Text('тут строка поиска'),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        for (CocktailCategory cocktailCategory
+                            in CocktailCategory.values)
+                          GestureDetector(
+                            child: CocktailTypeLabel(
+                              cocktailCategory: cocktailCategory.value,
+                              isActive: currentCategory == cocktailCategory,
+                            ),
+                            onTap: () {
+                              setState(() {
+                                currentCategory = cocktailCategory;
+                              });
+                            },
+                          ),
+                      ],
+                    ),
+                  ),
                 ),
                 Container(
-                  child: Text('Выбор вида напитка'),
+                  height: 30,
                 ),
-                Container(
-                  child: Text('GridView с коктейлями'),
+                FutureBuilder(
+                  future: AsyncCocktailRepository()
+                      .fetchCocktailsByCocktailCategory(currentCategory),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text('ошибка: ${snapshot.error.toString()},'),
+                      );
+                    }
+
+                    if (snapshot.hasData) {
+                      return Column(
+                        children: [
+                          Text('${snapshot.data.length}'),
+                          Text('${snapshot.data[0].id}'),
+                          Text('${snapshot.data[0].name}'),
+                          Text('${snapshot.data[0].drinkThumbUrl}'),
+//                          for (var snap in snapshot.data)
+//                            Text('${snap.toString()}')
+                        ],
+                      );
+                    }
+
+                    return Center(child: CircularProgressIndicator());
+                  },
                 ),
               ],
             )),

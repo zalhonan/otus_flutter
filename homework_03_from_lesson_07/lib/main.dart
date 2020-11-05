@@ -1,31 +1,25 @@
 import 'package:cocktail/core/models.dart';
+import 'package:cocktail/screens/cocktail_detail_builder_random.dart';
 import 'package:flutter/material.dart';
 import './services/theme.dart';
 
-import './ui/cocktail_detail_page.dart';
-import './ui/filter_page.dart';
+import './screens/cocktail_detail_page.dart';
+import './screens/filter_page.dart';
 
 import './core/src/repository/async_cocktail_repository.dart';
 
 void main() async {
-  print('first');
-  final cocktail = await AsyncCocktailRepository().getRandomCocktail();
-  print('second');
-
-  runApp(MyApp(cocktail));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
-  final Cocktail cocktail;
-  MyApp(this.cocktail);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: cocktailTheme,
-//      home: CocktailDetailPage(cocktail),
-      home: CocktailDetailPage(cocktail),
+      home: CocktailsFilterScreen(),
     );
   }
 }

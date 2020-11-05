@@ -11,12 +11,35 @@
 // 8. Делаем fork от репозитория и сдаем через PR
 // 9. Помним про декомпозицию кода по методам и классам.
 
+import 'package:cocktail/core/models.dart';
 import 'package:cocktail/core/src/repository/async_cocktail_repository.dart';
+import 'package:cocktail/services/colors.dart';
 import 'package:flutter/material.dart';
 
 class CocktailsFilterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
+            color: kDescriptionBackground,
+            // основной Column, содержащий все виджеты
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  child: Text('тут строка поиска'),
+                ),
+                Container(
+                  child: Text('Выбор вида напитка'),
+                ),
+                Container(
+                  child: Text('GridView с коктейлями'),
+                ),
+              ],
+            )),
+      ),
+    );
   }
 }

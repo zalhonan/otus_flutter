@@ -17,6 +17,8 @@ import 'package:cocktail/services/colors.dart';
 import 'package:flutter/material.dart';
 import '../widgets/search_window.dart';
 import '../widgets/cocktail_type_label.dart';
+import '../widgets/id_label.dart';
+import './cocktail_detail_builder.dart';
 
 class CocktailsFilterScreen extends StatefulWidget {
   @override
@@ -24,7 +26,7 @@ class CocktailsFilterScreen extends StatefulWidget {
 }
 
 class _CocktailsFilterScreenState extends State<CocktailsFilterScreen> {
-  CocktailCategory currentCategory = CocktailCategory.milkFloatShake;
+  CocktailCategory currentCategory = CocktailCategory.ordinaryDrink;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +39,7 @@ class _CocktailsFilterScreenState extends State<CocktailsFilterScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // строка поиска
               SearchWindow(),
               // крутилка выбора типа коктейля
               Container(
@@ -64,8 +67,9 @@ class _CocktailsFilterScreenState extends State<CocktailsFilterScreen> {
                 ),
               ),
               Container(
-                height: 30,
+                height: 15,
               ),
+              // грид коктейлей
               FutureBuilder(
                 future: AsyncCocktailRepository()
                     .fetchCocktailsByCocktailCategory(currentCategory),
@@ -78,15 +82,57 @@ class _CocktailsFilterScreenState extends State<CocktailsFilterScreen> {
 
                   if (snapshot.hasData &&
                       snapshot.connectionState != ConnectionState.waiting) {
-                    return Column(
-                      children: [
-                        Text('${snapshot.data.length}'),
-                        Text('${snapshot.data[0].id}'),
-                        Text('${snapshot.data[0].name}'),
-                        Text('${snapshot.data[0].drinkThumbUrl}'),
-//                          for (var snap in snapshot.data)
-//                            Text('${snap.toString()}')
-                      ],
+                    return Expanded(
+                      child: GridView.count(
+                        childAspectRatio: 0.8,
+                        crossAxisCount: 2,
+                        children: [
+                          for (var snap in snapshot.data)
+                            //snap.id snap.name snap.drinkThumbUrl
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CocktailDetailBuilder(
+                                      cocktailId: snap.id,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: NetworkImage(snap.drinkThumbUrl),
+                                    fit: BoxFit.cover,
+                                  ),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Container(
+                                  padding: EdgeInsets.all(16),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '«${snap.name}»',
+                                        style: TextStyle(
+                                          fontSize: 25,
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 16,
+                                      ),
+                                      IdLabel('id:${snap.id}'),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
                     );
                   }
                   return Expanded(

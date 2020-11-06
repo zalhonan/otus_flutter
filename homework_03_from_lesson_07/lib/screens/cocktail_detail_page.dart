@@ -65,10 +65,15 @@ class CocktailDetailPage extends StatelessWidget {
                       Positioned(
                         top: 26,
                         left: 28,
-                        child: Icon(
-                          Icons.arrow_back,
-                          color: kHeaderColor,
-                          size: 28,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Icon(
+                            Icons.arrow_back,
+                            color: kHeaderColor,
+                            size: 28,
+                          ),
                         ),
                       ),
                       Positioned(

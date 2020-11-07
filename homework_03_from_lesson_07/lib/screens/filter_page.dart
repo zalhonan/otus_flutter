@@ -17,8 +17,8 @@ import 'package:cocktail/services/colors.dart';
 import 'package:flutter/material.dart';
 import '../widgets/search_window.dart';
 import '../widgets/cocktail_type_label.dart';
-import '../widgets/small_label.dart';
 import './cocktail_detail_builder.dart';
+import '../widgets/cocktail_card.dart';
 
 class CocktailsFilterScreen extends StatefulWidget {
   @override
@@ -83,54 +83,35 @@ class _CocktailsFilterScreenState extends State<CocktailsFilterScreen> {
                   if (snapshot.hasData &&
                       snapshot.connectionState != ConnectionState.waiting) {
                     return Expanded(
-                      child: GridView.count(
-                        childAspectRatio: 0.8,
-                        crossAxisCount: 2,
-                        children: [
-                          for (var snap in snapshot.data)
-                            //snap.id snap.name snap.drinkThumbUrl
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CocktailDetailBuilder(
-                                      cocktailId: snap.id,
+                      child: CustomScrollView(
+                        slivers: [
+                          SliverGrid(
+                            delegate: SliverChildBuilderDelegate(
+                                (context, index) => GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                CocktailDetailBuilder(
+                                              cocktailId:
+                                                  snapshot.data[index].id,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: CocktailCard(
+                                        name: snapshot.data[index].name,
+                                        id: snapshot.data[index].id,
+                                        drinkThumbUrl:
+                                            snapshot.data[index].drinkThumbUrl,
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: NetworkImage(snap.drinkThumbUrl),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Container(
-                                  padding: EdgeInsets.all(16),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        '«${snap.name}»',
-                                        style: TextStyle(
-                                          fontSize: 25,
-                                        ),
-                                      ),
-                                      Container(
-                                        height: 16,
-                                      ),
-                                      SmallLabel('id:${snap.id}'),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
+                                childCount: snapshot.data.length),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    childAspectRatio: 0.8, crossAxisCount: 2),
+                          )
                         ],
                       ),
                     );

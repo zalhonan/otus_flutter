@@ -23,6 +23,9 @@ class _CocktailDetailBuilderState extends State<CocktailDetailBuilder> {
             return Center(
               child: Text(
                 'ошибка: ${snapshot.error.toString()}',
+                style: TextStyle(
+                  fontSize: 16,
+                ),
               ),
             );
           }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/colors.dart';
+import '../widgets/small_label.dart';
 
 // Информация о коктейле. Получает заголовок и описание
 
@@ -24,19 +24,7 @@ class CocktailInfo extends StatelessWidget {
         Container(
           height: 8,
         ),
-        Container(
-          child: Text(
-            description,
-            style: TextStyle(
-              fontSize: 16,
-            ),
-          ),
-          padding: EdgeInsets.fromLTRB(16, 6, 16, 6),
-          decoration: BoxDecoration(
-            color: kItemBackground,
-            borderRadius: BorderRadius.circular(30),
-          ),
-        ),
+        SmallLabel(description),
         Container(
           height: 20,
         )

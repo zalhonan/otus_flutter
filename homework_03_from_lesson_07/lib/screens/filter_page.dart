@@ -17,7 +17,7 @@ import 'package:cocktail/services/colors.dart';
 import 'package:flutter/material.dart';
 import '../widgets/search_window.dart';
 import '../widgets/cocktail_type_label.dart';
-import '../widgets/id_label.dart';
+import '../widgets/small_label.dart';
 import './cocktail_detail_builder.dart';
 
 class CocktailsFilterScreen extends StatefulWidget {
@@ -125,7 +125,7 @@ class _CocktailsFilterScreenState extends State<CocktailsFilterScreen> {
                                       Container(
                                         height: 16,
                                       ),
-                                      IdLabel('id:${snap.id}'),
+                                      SmallLabel('id:${snap.id}'),
                                     ],
                                   ),
                                 ),
@@ -137,7 +137,12 @@ class _CocktailsFilterScreenState extends State<CocktailsFilterScreen> {
                   }
                   return Expanded(
                     child: Center(
-                      child: CircularProgressIndicator(),
+//                      child: CircularProgressIndicator(),
+                      child: Container(
+                        height: 50,
+                        width: 50,
+                        child: Image.asset('images/shaker.png'),
+                      ),
                     ),
                   );
                 },

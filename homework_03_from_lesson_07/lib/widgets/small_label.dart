@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../services/colors.dart';
 
-class IdLabel extends StatelessWidget {
-  IdLabel(this.label);
+class SmallLabel extends StatelessWidget {
+  SmallLabel(this.label);
 
   final String label;
 

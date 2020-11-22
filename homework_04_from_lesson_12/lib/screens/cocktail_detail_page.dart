@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../core/models.dart';
@@ -6,7 +8,7 @@ import '../widgets/cocktail_info.dart';
 import '../widgets/ingredient_info.dart';
 import '../widgets/rating.dart';
 
-class CocktailDetailPage extends StatelessWidget {
+class CocktailDetailPage extends StatefulWidget {
   const CocktailDetailPage(
     this.cocktail, {
     Key key,
@@ -14,13 +16,19 @@ class CocktailDetailPage extends StatelessWidget {
 
   final Cocktail cocktail;
 
-  // разделяет инструкции по приготовлению на лист пунктов для лучшего вида
+  @override
+  _CocktailDetailPageState createState() => _CocktailDetailPageState();
+}
+
+class _CocktailDetailPageState extends State<CocktailDetailPage> {
   List<String> getInstructions(String instructions) {
     List<String> ans;
     ans = instructions.split('- ');
     ans.removeWhere((value) => value == '  ');
     return ans.sublist(1);
   }
+
+  bool _checked = true;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +55,7 @@ class CocktailDetailPage extends StatelessWidget {
                         bottom: 0,
                         width: screenWidth,
                         child: Image.network(
-                          cocktail.drinkThumbUrl,
+                          widget.cocktail.drinkThumbUrl,
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -88,6 +96,56 @@ class CocktailDetailPage extends StatelessWidget {
                     ],
                   ),
                 ),
+                // контейнер для стека
+//                Container(
+//                  padding: EdgeInsets.fromLTRB(33, 33, 33, 0),
+//                  width: screenWidth,
+//                  height: 100,
+//                  color: kDescriptionBackground,
+//                  child: Stack(
+//                    alignment: Alignment.topCenter,
+//                    fit: StackFit.expand,
+//                    children: [
+//                      Positioned(
+//                        top: 0,
+//                        left: 0,
+//                        child: Text(
+//                          widget.cocktail.name,
+//                          style: TextStyle(
+//                            fontSize: 24,
+//                          ),
+//                        ),
+//                      ),
+//                      Positioned(
+//                        top: 0,
+//                        right: 0,
+//                        child: AnimatedContainer(
+//                          child: GestureDetector(
+//                            child: LayoutBuilder(
+//                              builder: (context, constraint) {
+//                                return Center(
+//                                  child: Icon(
+//                                    Icons.favorite,
+//                                    size: constraint.biggest.height,
+//                                  ),
+//                                );
+//                              },
+//                            ),
+//                            onTap: () {
+//                              setState(() {
+//                                _checked = !_checked;
+//                              });
+//                            },
+//                          ),
+//                          curve: Curves.bounceInOut,
+//                          duration: const Duration(seconds: 1),
+//                          width: _checked ? 64.0 : 32.0,
+//                          height: _checked ? 64.0 : 32.0,
+//                        ),
+//                      ),
+//                    ],
+//                  ),
+//                ),
                 Container(
                   color: kDescriptionBackground,
                   padding: EdgeInsets.fromLTRB(33, 33, 33, 0),
@@ -100,23 +158,58 @@ class CocktailDetailPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            cocktail.name,
+                            widget.cocktail.name,
                             style: TextStyle(
                               fontSize: 24,
                             ),
                           ),
-                          Icon(
-                            cocktail.isFavourite
-                                ? Icons.favorite
-                                : Icons.favorite_border,
+                          GestureDetector(
+                            child: Container(
+                              width: 64,
+                              height: 64,
+                              child: Center(
+                                child: AnimatedSwitcher(
+                                  duration: const Duration(milliseconds: 500),
+                                  transitionBuilder: (Widget child,
+                                      Animation<double> animation) {
+                                    return ScaleTransition(
+                                      child: child,
+                                      scale: animation,
+                                    );
+                                  },
+                                  child: _checked
+                                      ? Icon(
+                                          Icons.favorite,
+                                          size: 48,
+                                          key: ValueKey(_checked),
+                                        )
+                                      : Icon(
+                                          Icons.favorite_border,
+                                          size: 48,
+                                          key: ValueKey(_checked),
+                                        ),
+                                ),
+                              ),
+                            ),
+                            onTap: () {
+                              setState(() {
+                                _checked = !_checked;
+                              });
+                            },
                           ),
+
+//                          Icon(
+//                            cocktail.isFavourite
+//                                ? Icons.favorite
+//                                : Icons.favorite_border,
+//                          ),
                         ],
                       ),
                       Container(
                         height: 10,
                       ),
                       Text(
-                        'id:${cocktail.id}',
+                        'id:${widget.cocktail.id}',
                         style: TextStyle(
                           fontSize: 16,
                           color: kSubheaderColor,
@@ -126,9 +219,11 @@ class CocktailDetailPage extends StatelessWidget {
                         height: 20,
                       ),
                       CocktailInfo(
-                          'Категория коктейля', cocktail.category.value),
-                      CocktailInfo('Тип коктейля', cocktail.cocktailType.value),
-                      CocktailInfo('Тип стекла', cocktail.glassType.value),
+                          'Категория коктейля', widget.cocktail.category.value),
+                      CocktailInfo(
+                          'Тип коктейля', widget.cocktail.cocktailType.value),
+                      CocktailInfo(
+                          'Тип стекла', widget.cocktail.glassType.value),
                     ],
                   ),
                 ),
@@ -153,7 +248,8 @@ class CocktailDetailPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      for (var ingredient in cocktail.ingredients.toList())
+                      for (var ingredient
+                          in widget.cocktail.ingredients.toList())
                         IngredientInfo(
                             ingredient.ingredientName, ingredient.measure),
                     ],
@@ -176,7 +272,7 @@ class CocktailDetailPage extends StatelessWidget {
                         height: 24,
                       ),
                       for (String instructionItem
-                          in getInstructions(cocktail.instruction))
+                          in getInstructions(widget.cocktail.instruction))
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,

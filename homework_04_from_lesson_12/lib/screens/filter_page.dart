@@ -19,6 +19,7 @@ import '../widgets/search_window.dart';
 import '../widgets/cocktail_type_label.dart';
 import './cocktail_detail_builder.dart';
 import '../widgets/cocktail_card.dart';
+import '../widgets/loading_progress_bar.dart';
 
 class CocktailsFilterScreen extends StatefulWidget {
   @override
@@ -116,16 +117,7 @@ class _CocktailsFilterScreenState extends State<CocktailsFilterScreen> {
                       ),
                     );
                   }
-                  return Expanded(
-                    child: Center(
-//                      child: CircularProgressIndicator(),
-                      child: Container(
-                        height: 50,
-                        width: 50,
-                        child: Image.asset('images/shaker.png'),
-                      ),
-                    ),
-                  );
+                  return LoadingProgressBar();
                 },
               ),
             ],

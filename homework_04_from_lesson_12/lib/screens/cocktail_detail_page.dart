@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../core/models.dart';
@@ -96,56 +94,6 @@ class _CocktailDetailPageState extends State<CocktailDetailPage> {
                     ],
                   ),
                 ),
-                // контейнер для стека
-//                Container(
-//                  padding: EdgeInsets.fromLTRB(33, 33, 33, 0),
-//                  width: screenWidth,
-//                  height: 100,
-//                  color: kDescriptionBackground,
-//                  child: Stack(
-//                    alignment: Alignment.topCenter,
-//                    fit: StackFit.expand,
-//                    children: [
-//                      Positioned(
-//                        top: 0,
-//                        left: 0,
-//                        child: Text(
-//                          widget.cocktail.name,
-//                          style: TextStyle(
-//                            fontSize: 24,
-//                          ),
-//                        ),
-//                      ),
-//                      Positioned(
-//                        top: 0,
-//                        right: 0,
-//                        child: AnimatedContainer(
-//                          child: GestureDetector(
-//                            child: LayoutBuilder(
-//                              builder: (context, constraint) {
-//                                return Center(
-//                                  child: Icon(
-//                                    Icons.favorite,
-//                                    size: constraint.biggest.height,
-//                                  ),
-//                                );
-//                              },
-//                            ),
-//                            onTap: () {
-//                              setState(() {
-//                                _checked = !_checked;
-//                              });
-//                            },
-//                          ),
-//                          curve: Curves.bounceInOut,
-//                          duration: const Duration(seconds: 1),
-//                          width: _checked ? 64.0 : 32.0,
-//                          height: _checked ? 64.0 : 32.0,
-//                        ),
-//                      ),
-//                    ],
-//                  ),
-//                ),
                 Container(
                   color: kDescriptionBackground,
                   padding: EdgeInsets.fromLTRB(33, 33, 33, 0),
@@ -197,12 +145,6 @@ class _CocktailDetailPageState extends State<CocktailDetailPage> {
                               });
                             },
                           ),
-
-//                          Icon(
-//                            cocktail.isFavourite
-//                                ? Icons.favorite
-//                                : Icons.favorite_border,
-//                          ),
                         ],
                       ),
                       Container(

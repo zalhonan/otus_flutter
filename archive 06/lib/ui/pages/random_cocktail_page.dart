@@ -11,8 +11,7 @@ class RandomCocktailPageWidget extends StatefulWidget {
   const RandomCocktailPageWidget(this.repository, {Key key}) : super(key: key);
 
   @override
-  _RandomCocktailPageWidgetState createState() =>
-      _RandomCocktailPageWidgetState();
+  _RandomCocktailPageWidgetState createState() => _RandomCocktailPageWidgetState();
 }
 
 class _RandomCocktailPageWidgetState extends State<RandomCocktailPageWidget> {
@@ -30,8 +29,7 @@ class _RandomCocktailPageWidgetState extends State<RandomCocktailPageWidget> {
               onCategorySelected: (category) {
                 Navigator.of(context).push(
                   MaterialPageRoute<void>(
-                    builder: (context) =>
-                        FilterResultsPageWidget(selectedCategory: category),
+                    builder: (context) => FilterResultsPageWidget(selectedCategory: category),
                   ),
                 );
               },
@@ -47,7 +45,7 @@ class _RandomCocktailPageWidgetState extends State<RandomCocktailPageWidget> {
 
   Widget _buildRandomCocktailPage(BuildContext context) {
     return FutureBuilder<Cocktail>(
-        future: widget.repository.getRandomCocktail(context),
+        future: widget.repository.getRandomCocktail(),
         builder: (ctx, snapshot) {
           if (snapshot.hasError) {
             return SliverFillRemaining(
@@ -71,8 +69,7 @@ class _RandomCocktailPageWidgetState extends State<RandomCocktailPageWidget> {
               sliver: SliverGrid(
                 delegate: SliverChildBuilderDelegate(
                   (ctx, index) {
-                    return CocktailGridItem(cocktailDefinition,
-                        selectedCategory: cocktail.category);
+                    return CocktailGridItem(cocktailDefinition, selectedCategory: cocktail.category);
                   },
                   childCount: 1,
                 ),

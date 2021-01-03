@@ -21,17 +21,6 @@ mixin _$_CocktailImpl on CocktailStore, Store {
       ActionController(name: 'CocktailStore');
 
   @override
-  void removeItemFromFavorities(CocktailDefinition cocktail) {
-    final _$actionInfo = _$CocktailStoreActionController.startAction(
-        name: 'CocktailStore.removeItemFromFavorities');
-    try {
-      return super.removeItemFromFavorities(cocktail);
-    } finally {
-      _$CocktailStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void addItemToFavorities(CocktailDefinition cocktail) {
     final _$actionInfo = _$CocktailStoreActionController.startAction(
         name: 'CocktailStore.addItemToFavorities');
@@ -43,33 +32,11 @@ mixin _$_CocktailImpl on CocktailStore, Store {
   }
 
   @override
-  void removeFromFavoritiesById(String id) {
+  void removeItemFromFavorities(CocktailDefinition cocktail) {
     final _$actionInfo = _$CocktailStoreActionController.startAction(
-        name: 'CocktailStore.removeFromFavoritiesById');
+        name: 'CocktailStore.removeItemFromFavorities');
     try {
-      return super.removeFromFavoritiesById(id);
-    } finally {
-      _$CocktailStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void addToFavoritiesByCocktail(Cocktail cocktail) {
-    final _$actionInfo = _$CocktailStoreActionController.startAction(
-        name: 'CocktailStore.addToFavoritiesByCocktail');
-    try {
-      return super.addToFavoritiesByCocktail(cocktail);
-    } finally {
-      _$CocktailStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  bool isInFav(String cocktailId) {
-    final _$actionInfo = _$CocktailStoreActionController.startAction(
-        name: 'CocktailStore.isInFav');
-    try {
-      return super.isInFav(cocktailId);
+      return super.removeItemFromFavorities(cocktail);
     } finally {
       _$CocktailStoreActionController.endAction(_$actionInfo);
     }

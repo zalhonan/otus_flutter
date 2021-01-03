@@ -8,12 +8,10 @@ import 'package:flutter/material.dart';
 class FilterResultsPageWidget extends StatefulWidget {
   final CocktailCategory selectedCategory;
 
-  const FilterResultsPageWidget({Key key, @required this.selectedCategory})
-      : super(key: key);
+  const FilterResultsPageWidget({Key key, @required this.selectedCategory}) : super(key: key);
 
   @override
-  _FilterResultsPageWidgetState createState() =>
-      _FilterResultsPageWidgetState(selectedCategory);
+  _FilterResultsPageWidgetState createState() => _FilterResultsPageWidgetState(selectedCategory);
 }
 
 class _FilterResultsPageWidgetState extends State<FilterResultsPageWidget> {
@@ -55,12 +53,10 @@ class _FilterResultsPageWidgetState extends State<FilterResultsPageWidget> {
 
   Widget _buildCocktailItems(BuildContext context) {
     return FutureBuilder<Iterable<CocktailDefinition>>(
-        future: repository.fetchCocktailsByCocktailCategory(
-            _categoryNotifier.value, context),
+        future: repository.fetchCocktailsByCocktailCategory(_categoryNotifier.value),
         builder: (ctx, snapshot) {
           if (snapshot.hasError) {
-            return SliverFillRemaining(
-                child: Center(child: Text(snapshot.error.toString())));
+            return SliverFillRemaining(child: Center(child: Text(snapshot.error.toString())));
           }
 
           if (snapshot.hasData) {
@@ -68,8 +64,7 @@ class _FilterResultsPageWidgetState extends State<FilterResultsPageWidget> {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               sliver: SliverGrid(
                   delegate: SliverChildBuilderDelegate((ctx, index) {
-                    return CocktailGridItem(snapshot.data.elementAt(index),
-                        selectedCategory: _categoryNotifier.value);
+                    return CocktailGridItem(snapshot.data.elementAt(index), selectedCategory: _categoryNotifier.value);
                   }, childCount: snapshot.data.length),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       childAspectRatio: CocktailGridItem.aspectRatio,

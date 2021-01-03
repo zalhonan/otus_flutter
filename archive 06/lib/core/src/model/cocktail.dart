@@ -76,7 +76,7 @@ class Cocktail {
   final CocktailType cocktailType;
   final Iterable<IngredientDefinition> ingredients;
   final String drinkThumbUrl;
-  bool isFavourite;
+  final bool isFavourite;
 
   Cocktail({
     @required this.id,
@@ -89,10 +89,6 @@ class Cocktail {
     @required this.drinkThumbUrl,
     @required this.isFavourite,
   });
-
-  void setFav() => isFavourite = true;
-
-  void setUnfav() => isFavourite = false;
 
   @override
   String toString() {

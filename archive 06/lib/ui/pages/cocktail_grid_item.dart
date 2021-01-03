@@ -2,8 +2,6 @@ import 'package:cocktail_app/core/models.dart';
 import 'package:cocktail_app/ui/pages/cocktail_details_loader_page.dart';
 import 'package:cocktail_app/ui/style/custom_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:mobx/mobx.dart';
-
 import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:cocktail_app/stores/cocktail.dart';
@@ -25,6 +23,9 @@ class CocktailGridItem extends StatefulWidget {
 class _CocktailGridItemState extends State<CocktailGridItem> {
   @override
   Widget build(BuildContext context) {
+    //обращение к стору, созданному на уровне приложения
+    final store = Provider.of<CocktailStore>(context);
+
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(
@@ -60,11 +61,6 @@ class _CocktailGridItemState extends State<CocktailGridItem> {
               top: 0,
               right: 0,
               child: _getIsFavoriteIcon(context),
-//              child: Observer(
-//                builder: (context) {
-//                  return _getIsFavoriteIcon(context);
-//                },
-//              ),
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -94,15 +90,16 @@ class _CocktailGridItemState extends State<CocktailGridItem> {
     //обращение к стору, созданному на уровне приложения
     final store = Provider.of<CocktailStore>(context);
 
-    if (store.isInFav(widget.cocktailDefinition.id)) {
+    if (widget.cocktailDefinition.isFavourite) {
       return IconButton(
         icon: Icon(Icons.favorite, color: Colors.white),
         onPressed: () {
           //логика удаления из избранного
           store.removeItemFromFavorities(widget.cocktailDefinition);
-          widget.cocktailDefinition.setUnfav();
-          //TODO убрать
-          print("--${store.countFavorities}--");
+          widget.cocktailDefinition.switchFav();
+          //TODO: убрать отладку
+          print(
+              "---removed---${widget.cocktailDefinition}.id---now fav---$store.countFavorities");
           setState(() {});
         },
       );
@@ -111,10 +108,11 @@ class _CocktailGridItemState extends State<CocktailGridItem> {
         icon: Icon(Icons.favorite_border, color: Colors.white),
         onPressed: () {
           //логика добавления в избранноге
-          widget.cocktailDefinition.setFav();
           store.addItemToFavorities(widget.cocktailDefinition);
-          //TODO убрать
-          print("--${store.countFavorities}--");
+          widget.cocktailDefinition.switchFav();
+          //TODO: убрать отладку
+          print(
+              "---added---${widget.cocktailDefinition.id}---now fav---${store.countFavorities}");
           setState(() {});
         },
       );

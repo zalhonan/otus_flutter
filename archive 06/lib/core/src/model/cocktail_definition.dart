@@ -29,7 +29,11 @@ class CocktailDefinition {
     @required this.isFavourite,
   });
 
-  void setFav() => isFavourite = true;
-
-  void setUnfav() => isFavourite = false;
+  void switchFav() {
+    if (isFavourite) {
+      isFavourite = false;
+    } else {
+      isFavourite = true;
+    }
+  }
 }

@@ -36,6 +36,9 @@ class _ApplicationNavigationBarState extends State<ApplicationNavigationBar>
 
   @override
   Widget build(BuildContext context) {
+    //обращение к стору, созданному на уровне приложения
+    final store = Provider.of<CocktailStore>(context);
+
     return Material(
       color: CustomColors.background,
       child: TabBar(
@@ -71,18 +74,16 @@ class _ApplicationNavigationBarState extends State<ApplicationNavigationBar>
               ),
             );
             // добавлена навигация в сетку коктейлей FilterResultsPageWidget
-            //TODO: запоминать предыдущую категорию и передавать её сюда
           } else if (index == 1 &&
               _tabController.previousIndex != _tabController.index) {
+            store.fetchCocktails();
             Navigator.of(context).push(
               MaterialPageRoute<void>(
                 builder: (context) => FilterResultsPageWidget(
-                    selectedCategory: CocktailCategory.ordinaryDrink),
+                    selectedCategory: store.currentCategory),
               ),
             );
             // добавлена навигация в random cocktail
-            // TODO: убрать ссылку на репозиторий после перехода на MobX
-
           } else if (index == 0 &&
               _tabController.previousIndex != _tabController.index) {
             Navigator.of(context).push(

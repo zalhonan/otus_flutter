@@ -32,8 +32,6 @@ class _FilterResultsPageWidgetState extends State<FilterResultsPageWidget> {
     //обращение к стору, созданному на уровне приложения
     final store = Provider.of<CocktailStore>(context);
 
-    store.setCategory(CocktailCategory.ordinaryDrink);
-
     return ApplicationScaffold(
       title: 'Мой бар',
       currentSelectedNavBarItem: 1,

@@ -6,6 +6,10 @@ import 'package:cocktail_app/ui/style/svg_icons.dart';
 import 'package:cocktail_app/core/models.dart';
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:cocktail_app/stores/cocktail_store.dart';
+
 // TODO: убрать при полном переходе на MobX
 final repository = AsyncCocktailRepository();
 
@@ -31,68 +35,70 @@ class _ApplicationNavigationBarState extends State<ApplicationNavigationBar>
       : _currentSelectedItem = currentSelectedItem;
 
   @override
-  Widget build(BuildContext context) => Material(
-        color: CustomColors.background,
-        child: TabBar(
-          controller: _tabController,
-          tabs: [
-            Tab(
-                icon: SvgIcons.cocktails(_currentSelectedItem == 0
-                    ? CustomColors.active_tab
-                    : CustomColors.inactive_tab),
-                text: 'Коктейли'),
-            Tab(
-                icon: SvgIcons.myBar(_currentSelectedItem == 1
-                    ? CustomColors.active_tab
-                    : CustomColors.inactive_tab),
-                text: 'Мой бар'),
-            Tab(
-                icon: SvgIcons.favorite(_currentSelectedItem == 2
-                    ? CustomColors.active_tab
-                    : CustomColors.inactive_tab),
-                text: 'Избранное'),
-            Tab(
-                icon: SvgIcons.profile(_currentSelectedItem == 3
-                    ? CustomColors.active_tab
-                    : CustomColors.inactive_tab),
-                text: 'Профиль'),
-          ],
-          onTap: (index) {
-            if (index == 2 &&
-                _tabController.previousIndex != _tabController.index) {
-              Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (context) => FavouriteCocktailsPage(),
-                ),
-              );
-              // добавлена навигация в сетку коктейлей FilterResultsPageWidget
-              //TODO: запоминать предыдущую категорию и передавать её сюда
-            } else if (index == 1 &&
-                _tabController.previousIndex != _tabController.index) {
-              Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (context) => FilterResultsPageWidget(
-                      selectedCategory: CocktailCategory.ordinaryDrink),
-                ),
-              );
-              // добавлена навигация в random cocktail
-              // TODO: убрать ссылку на репозиторий после перехода на MobX
+  Widget build(BuildContext context) {
+    return Material(
+      color: CustomColors.background,
+      child: TabBar(
+        controller: _tabController,
+        tabs: [
+          Tab(
+              icon: SvgIcons.cocktails(_currentSelectedItem == 0
+                  ? CustomColors.active_tab
+                  : CustomColors.inactive_tab),
+              text: 'Коктейли'),
+          Tab(
+              icon: SvgIcons.myBar(_currentSelectedItem == 1
+                  ? CustomColors.active_tab
+                  : CustomColors.inactive_tab),
+              text: 'Мой бар'),
+          Tab(
+              icon: SvgIcons.favorite(_currentSelectedItem == 2
+                  ? CustomColors.active_tab
+                  : CustomColors.inactive_tab),
+              text: 'Избранное'),
+          Tab(
+              icon: SvgIcons.profile(_currentSelectedItem == 3
+                  ? CustomColors.active_tab
+                  : CustomColors.inactive_tab),
+              text: 'Профиль'),
+        ],
+        onTap: (index) {
+          if (index == 2 &&
+              _tabController.previousIndex != _tabController.index) {
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (context) => FavouriteCocktailsPage(),
+              ),
+            );
+            // добавлена навигация в сетку коктейлей FilterResultsPageWidget
+            //TODO: запоминать предыдущую категорию и передавать её сюда
+          } else if (index == 1 &&
+              _tabController.previousIndex != _tabController.index) {
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (context) => FilterResultsPageWidget(
+                    selectedCategory: CocktailCategory.ordinaryDrink),
+              ),
+            );
+            // добавлена навигация в random cocktail
+            // TODO: убрать ссылку на репозиторий после перехода на MobX
 
-            } else if (index == 0 &&
-                _tabController.previousIndex != _tabController.index) {
-              Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (context) => RandomCocktailPageWidget(repository),
-                ),
-              );
-            } else {
-              setState(() {
-                _currentSelectedItem = index;
-              });
-            }
-          },
-        ),
-      );
+          } else if (index == 0 &&
+              _tabController.previousIndex != _tabController.index) {
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (context) => RandomCocktailPageWidget(repository),
+              ),
+            );
+          } else {
+            setState(() {
+              _currentSelectedItem = index;
+            });
+          }
+        },
+      ),
+    );
+  }
 
   @override
   void dispose() {

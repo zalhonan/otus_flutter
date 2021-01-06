@@ -64,6 +64,7 @@ abstract class CocktailStore with Store {
   void setCategory(CocktailCategory newCategory) {
     fetchCocktailsFuture = emptyCocktailList;
     currentCategory = newCategory;
+    fetchCocktails();
   }
 
   //запрос к сети по полному инфо по коктейлю

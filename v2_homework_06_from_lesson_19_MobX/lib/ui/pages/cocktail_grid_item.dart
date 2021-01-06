@@ -10,7 +10,9 @@ class CocktailGridItem extends StatelessWidget {
 
   final CocktailCategory selectedCategory;
 
-  const CocktailGridItem(this.cocktailDefinition, {Key key, this.selectedCategory}) : super(key: key);
+  const CocktailGridItem(this.cocktailDefinition,
+      {Key key, this.selectedCategory})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,8 @@ class CocktailGridItem extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute<void>(
-            builder: (context) => CocktailDetailsLoaderPageWidget(cocktailId: cocktailDefinition.id),
+            builder: (context) => CocktailDetailsLoaderPageWidget(
+                cocktailId: cocktailDefinition.id),
           ),
         );
       },
@@ -34,12 +37,21 @@ class CocktailGridItem extends StatelessWidget {
                       stops: [0.44, 0.94],
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [Color.fromRGBO(14, 13, 19, 0), Color(0xFF0E0D13)])),
+                      colors: [
+                        Color.fromRGBO(14, 13, 19, 0),
+                        Color(0xFF0E0D13)
+                      ])),
               position: DecorationPosition.foreground,
               child: Image.network(
                 cocktailDefinition.drinkThumbUrl ?? '',
                 fit: BoxFit.cover,
               ),
+            ),
+            // редизайн - иконка отнесения в избранное перенесена вверх и вправо
+            Positioned(
+              top: 0,
+              right: 0,
+              child: _getIsFavoriteIcon(false),
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -47,14 +59,16 @@ class CocktailGridItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(cocktailDefinition.name ?? '', style: Theme.of(context).textTheme.bodyText1),
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, mainAxisSize: MainAxisSize.max, children: [
-                    Chip(
+                  Text(cocktailDefinition.name ?? '',
+                      style: Theme.of(context).textTheme.bodyText1),
+                  // редизайн - тег коктейля вылезал за край, вместе с иконкой был слишком мелким
+                  FittedBox(
+                    child: Chip(
                       backgroundColor: CustomColors.black,
-                      label: Text(selectedCategory.name, style: Theme.of(context).textTheme.caption),
+                      label: Text(selectedCategory.name,
+                          style: Theme.of(context).textTheme.caption),
                     ),
-                    _getIsFavoriteIcon(cocktailDefinition.isFavourite),
-                  ]),
+                  ),
                 ],
               ),
             )

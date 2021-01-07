@@ -20,7 +20,8 @@ class AsyncCocktailRepository {
     'x-rapidapi-key': _apiKey,
   };
 
-  Future<Cocktail> fetchCocktailDetails(String id) async {
+  Future<Cocktail> fetchCocktailDetails(
+      String id, List<String> favoritiesIds) async {
     Cocktail result;
 
     final url = 'https://the-cocktail-db.p.rapidapi.com/lookup.php?i=$id';
@@ -33,7 +34,7 @@ class AsyncCocktailRepository {
           .cast<Map<String, dynamic>>()
           .map((json) => CocktailDto.fromJson(json));
       if (dtos.length > 0) {
-        result = _createCocktailFromDto(dtos.first);
+        result = _createCocktailFromDto(dtos.first, favoritiesIds);
       }
     } else {
       throw HttpException('Request failed with status: ${response.statusCode}');
@@ -114,7 +115,8 @@ class AsyncCocktailRepository {
     return result;
   }
 
-  Future<Iterable<Cocktail>> fetchPopularCocktails() async {
+  Future<Iterable<Cocktail>> fetchPopularCocktails(
+      List<String> favoriteIds) async {
     var result = <Cocktail>[];
 
     const url = 'https://the-cocktail-db.p.rapidapi.com/popular.php';
@@ -133,7 +135,7 @@ class AsyncCocktailRepository {
           .map((json) => CocktailDto.fromJson(json));
 
       for (final dto in dtos) {
-        final cocktail = _createCocktailFromDto(dto);
+        final cocktail = _createCocktailFromDto(dto, favoriteIds);
         result.add(cocktail);
       }
     } else {
@@ -156,7 +158,8 @@ class AsyncCocktailRepository {
           .cast<Map<String, dynamic>>()
           .map((json) => CocktailDto.fromJson(json));
       if (dtos.length > 0) {
-        result = _createCocktailFromDto(dtos.first);
+        //TODO: передать фав IDs
+        result = _createCocktailFromDto(dtos.first, []);
       }
     } else {
       throw HttpException('Request failed with status: ${response.statusCode}');
@@ -169,7 +172,7 @@ class AsyncCocktailRepository {
     return null;
   }
 
-  Cocktail _createCocktailFromDto(CocktailDto dto) {
+  Cocktail _createCocktailFromDto(CocktailDto dto, List<String> favoritiesIds) {
     final glass = GlassType.parse(dto.strGlass);
     final cocktailType = CocktailType.parse(dto.strAlcoholic);
     final category = CocktailCategory.parse(dto.strCategory);
@@ -185,8 +188,7 @@ class AsyncCocktailRepository {
       cocktailType: cocktailType,
       glassType: glass,
       instruction: dto.strInstructions,
-      isFavourite: false,
-      /*  TODO: is Favorite field fetching  */
+      isFavourite: favoritiesIds.contains(dto.idDrink) ? true : false,
       name: dto.strDrink,
       ingredients: ingredients,
       drinkThumbUrl: dto.strDrinkThumb,

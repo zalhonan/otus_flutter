@@ -1,5 +1,4 @@
 import 'package:cocktail_app/core/models.dart';
-import 'package:cocktail_app/main.dart';
 import 'package:cocktail_app/ui/aplication/application_scaffold.dart';
 import 'package:cocktail_app/ui/pages/categories_fitler_bar_delegate.dart';
 import 'package:cocktail_app/ui/pages/cocktail_grid_item.dart';

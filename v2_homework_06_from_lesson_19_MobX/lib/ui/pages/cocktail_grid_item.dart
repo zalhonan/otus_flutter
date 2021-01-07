@@ -25,13 +25,14 @@ class _CocktailGridItemState extends State<CocktailGridItem> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      //добавлен .then SetState для корректного обновления страницы при возврате со страницы детального отображения коктейля
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute<void>(
-            builder: (context) => CocktailDetailsLoaderPageWidget(
-                cocktailId: widget.cocktailDefinition.id),
-          ),
-        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => CocktailDetailsLoaderPageWidget(
+                  cocktailId: widget.cocktailDefinition.id)),
+        ).then((value) => setState(() {}));
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
@@ -100,9 +101,6 @@ class _CocktailGridItemState extends State<CocktailGridItem> {
           //удаление из избранного
           store.removeFromFavoritiesById(widget.cocktailDefinition.id);
           widget.cocktailDefinition.setUnfav();
-          //TODO убрать
-          print("--${store.countFavorities}--");
-          print("-LIST OF IDS-${store.favoritiesIds}--");
           setState(() {});
         },
       );
@@ -113,9 +111,6 @@ class _CocktailGridItemState extends State<CocktailGridItem> {
           //добавление в избранное
           store.addItemToFavorities(widget.cocktailDefinition);
           widget.cocktailDefinition.setFav();
-          //TODO убрать
-          print("--${store.countFavorities}--");
-          print("-LIST OF IDS-${store.favoritiesIds}--");
           setState(() {});
         },
       );

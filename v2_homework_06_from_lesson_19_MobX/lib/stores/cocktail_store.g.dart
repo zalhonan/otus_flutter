@@ -16,6 +16,13 @@ mixin _$_CocktailImpl on CocktailStore, Store {
       (_$hasResultsComputed ??= Computed<bool>(() => super.hasResults,
               name: 'CocktailStore.hasResults'))
           .value;
+  Computed<bool> _$hasCocktailComputed;
+
+  @override
+  bool get hasCocktail =>
+      (_$hasCocktailComputed ??= Computed<bool>(() => super.hasCocktail,
+              name: 'CocktailStore.hasCocktail'))
+          .value;
   Computed<List<String>> _$favoritiesIdsComputed;
 
   @override
@@ -78,6 +85,21 @@ mixin _$_CocktailImpl on CocktailStore, Store {
     });
   }
 
+  final _$currentCocktailIdAtom = Atom(name: 'CocktailStore.currentCocktailId');
+
+  @override
+  String get currentCocktailId {
+    _$currentCocktailIdAtom.reportRead();
+    return super.currentCocktailId;
+  }
+
+  @override
+  set currentCocktailId(String value) {
+    _$currentCocktailIdAtom.reportWrite(value, super.currentCocktailId, () {
+      super.currentCocktailId = value;
+    });
+  }
+
   final _$currentCocktailAtom = Atom(name: 'CocktailStore.currentCocktail');
 
   @override
@@ -93,18 +115,19 @@ mixin _$_CocktailImpl on CocktailStore, Store {
     });
   }
 
-  final _$currentCocktailIdAtom = Atom(name: 'CocktailStore.currentCocktailId');
+  final _$fetchCocktailFutureAtom =
+      Atom(name: 'CocktailStore.fetchCocktailFuture');
 
   @override
-  String get currentCocktailId {
-    _$currentCocktailIdAtom.reportRead();
-    return super.currentCocktailId;
+  ObservableFuture<Cocktail> get fetchCocktailFuture {
+    _$fetchCocktailFutureAtom.reportRead();
+    return super.fetchCocktailFuture;
   }
 
   @override
-  set currentCocktailId(String value) {
-    _$currentCocktailIdAtom.reportWrite(value, super.currentCocktailId, () {
-      super.currentCocktailId = value;
+  set fetchCocktailFuture(ObservableFuture<Cocktail> value) {
+    _$fetchCocktailFutureAtom.reportWrite(value, super.fetchCocktailFuture, () {
+      super.fetchCocktailFuture = value;
     });
   }
 
@@ -123,6 +146,13 @@ mixin _$_CocktailImpl on CocktailStore, Store {
     });
   }
 
+  final _$fetchCocktailAsyncAction = AsyncAction('CocktailStore.fetchCocktail');
+
+  @override
+  Future<Cocktail> fetchCocktail() {
+    return _$fetchCocktailAsyncAction.run(() => super.fetchCocktail());
+  }
+
   final _$CocktailStoreActionController =
       ActionController(name: 'CocktailStore');
 
@@ -132,6 +162,17 @@ mixin _$_CocktailImpl on CocktailStore, Store {
         name: 'CocktailStore.setCategory');
     try {
       return super.setCategory(newCategory);
+    } finally {
+      _$CocktailStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setCurrentCocktailId(String id) {
+    final _$actionInfo = _$CocktailStoreActionController.startAction(
+        name: 'CocktailStore.setCurrentCocktailId');
+    try {
+      return super.setCurrentCocktailId(id);
     } finally {
       _$CocktailStoreActionController.endAction(_$actionInfo);
     }
@@ -176,10 +217,12 @@ mixin _$_CocktailImpl on CocktailStore, Store {
 currentCocktails: ${currentCocktails},
 currentCategory: ${currentCategory},
 fetchCocktailsFuture: ${fetchCocktailsFuture},
-currentCocktail: ${currentCocktail},
 currentCocktailId: ${currentCocktailId},
+currentCocktail: ${currentCocktail},
+fetchCocktailFuture: ${fetchCocktailFuture},
 favoriteCocktails: ${favoriteCocktails},
 hasResults: ${hasResults},
+hasCocktail: ${hasCocktail},
 favoritiesIds: ${favoritiesIds},
 countFavorities: ${countFavorities}
     ''';

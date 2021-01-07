@@ -22,10 +22,11 @@ class CocktailPreview extends StatelessWidget {
             child: Container(
               color: Colors.transparent,
               foregroundDecoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                      colors: [CustomColors.gradient_first, CustomColors.gradient_second],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter)),
+                gradient: const LinearGradient(colors: [
+                  CustomColors.gradient_first,
+                  CustomColors.gradient_second
+                ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+              ),
             ),
           ),
         ),
@@ -41,11 +42,14 @@ class CocktailPreview extends StatelessWidget {
                     Icons.arrow_back,
                     color: Colors.white,
                   ),
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
                 ),
                 IconButton(
                   onPressed: () {},
                   icon: Icon(
+                    //TODO: шаринг
                     Icons.share,
                     color: Colors.white,
                   ),

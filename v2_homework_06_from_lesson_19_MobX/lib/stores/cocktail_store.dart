@@ -57,6 +57,25 @@ abstract class CocktailStore with Store {
   }
 
   //TODO: переделка по MobX по полному инфо коктейля - cock_detail_loader_page + cock_detail_page
+
+  //ID текущего коктейля
+  @observable
+  String currentCocktailId = '';
+
+  //пустой коктейль для дальнейшего сравнения
+  static ObservableFuture<Cocktail> emptyCocktail = ObservableFuture.value(
+      Cocktail(
+          id: null,
+          name: null,
+          instruction: null,
+          category: null,
+          glassType: null,
+          cocktailType: null,
+          ingredients: null,
+          drinkThumbUrl: null,
+          isFavourite: null));
+
+  //начинаем с пустого коктейля
   @observable
   Cocktail currentCocktail = Cocktail(
       id: null,
@@ -69,8 +88,31 @@ abstract class CocktailStore with Store {
       drinkThumbUrl: null,
       isFavourite: null);
 
+  //начинаем с пустого коктейля для будущих запросов
   @observable
-  String currentCocktailId = '';
+  ObservableFuture<Cocktail> fetchCocktailFuture = emptyCocktail;
+
+  //считаем. есть ли результат
+  @computed
+  bool get hasCocktail =>
+      fetchCocktailFuture != emptyCocktail &&
+      fetchCocktailFuture.status == FutureStatus.fulfilled;
+
+  // собственно запрос к сети
+  @action
+  Future<Cocktail> fetchCocktail() async {
+    final future =
+        repository.fetchCocktailDetails(currentCocktailId, favoritiesIds);
+    fetchCocktailFuture = ObservableFuture(future);
+    return currentCocktail = await future;
+  }
+
+  @action
+  void setCurrentCocktailId(String id) {
+    fetchCocktailFuture = emptyCocktail;
+    currentCocktailId = id;
+    fetchCocktail();
+  }
 
   //TODO: Работа по рандомному коктейлю - random_cock_page
 

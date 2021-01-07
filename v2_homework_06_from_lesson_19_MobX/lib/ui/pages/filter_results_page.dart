@@ -97,38 +97,4 @@ class _FilterResultsPageWidgetState extends State<FilterResultsPageWidget> {
       },
     );
   }
-
-  Widget _buildCocktailItemsOld(BuildContext context) {
-    return FutureBuilder<Iterable<CocktailDefinition>>(
-      future:
-          repository.fetchCocktailsByCocktailCategory(_categoryNotifier.value),
-      builder: (ctx, snapshot) {
-        if (snapshot.hasError) {
-          return SliverFillRemaining(
-              child: Center(child: Text(snapshot.error.toString())));
-        }
-
-        if (snapshot.hasData) {
-          return SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            sliver: SliverGrid(
-                delegate: SliverChildBuilderDelegate((ctx, index) {
-                  return CocktailGridItem(snapshot.data.elementAt(index),
-                      selectedCategory: _categoryNotifier.value);
-                }, childCount: snapshot.data.length),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: CocktailGridItem.aspectRatio,
-                    crossAxisSpacing: 6,
-                    mainAxisSpacing: 6,
-                    crossAxisCount: 2)),
-          );
-        }
-
-        //  todo set loader
-        return SliverFillRemaining(
-          child: const SizedBox(),
-        );
-      },
-    );
-  }
 }

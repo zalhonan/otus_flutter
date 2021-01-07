@@ -24,6 +24,9 @@ class CocktailGridItem extends StatefulWidget {
 class _CocktailGridItemState extends State<CocktailGridItem> {
   @override
   Widget build(BuildContext context) {
+    //обращение к стору, созданному на уровне приложения
+    final store = Provider.of<CocktailStore>(context);
+
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(
@@ -91,9 +94,8 @@ class _CocktailGridItemState extends State<CocktailGridItem> {
   Widget _getIsFavoriteIcon(context) {
     //обращение к стору, созданному на уровне приложения
     final store = Provider.of<CocktailStore>(context);
-    if (store.favoriteCocktails
-        .where((element) => element.id == widget.cocktailDefinition.id)
-        .isNotEmpty) {
+
+    if (store.favoriteCocktails.contains(widget.cocktailDefinition)) {
       return IconButton(
         icon: Icon(Icons.favorite, color: Colors.white),
         onPressed: () {
@@ -102,7 +104,6 @@ class _CocktailGridItemState extends State<CocktailGridItem> {
           widget.cocktailDefinition.setUnfav();
           //TODO убрать
           print("--${store.countFavorities}--");
-          print("-LIST OF IDS-${store.favoritiesIds}--");
           setState(() {});
         },
       );
@@ -115,7 +116,6 @@ class _CocktailGridItemState extends State<CocktailGridItem> {
           widget.cocktailDefinition.setFav();
           //TODO убрать
           print("--${store.countFavorities}--");
-          print("-LIST OF IDS-${store.favoritiesIds}--");
           setState(() {});
         },
       );

@@ -9,6 +9,13 @@ part of 'cocktail_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$_CocktailImpl on CocktailStore, Store {
+  Computed<bool> _$hasResultsComputed;
+
+  @override
+  bool get hasResults =>
+      (_$hasResultsComputed ??= Computed<bool>(() => super.hasResults,
+              name: 'CocktailStore.hasResults'))
+          .value;
   Computed<List<String>> _$favoritiesIdsComputed;
 
   @override
@@ -16,12 +23,12 @@ mixin _$_CocktailImpl on CocktailStore, Store {
           Computed<List<String>>(() => super.favoritiesIds,
               name: 'CocktailStore.favoritiesIds'))
       .value;
-  Computed<bool> _$hasResultsComputed;
+  Computed<int> _$countFavoritiesComputed;
 
   @override
-  bool get hasResults =>
-      (_$hasResultsComputed ??= Computed<bool>(() => super.hasResults,
-              name: 'CocktailStore.hasResults'))
+  int get countFavorities =>
+      (_$countFavoritiesComputed ??= Computed<int>(() => super.countFavorities,
+              name: 'CocktailStore.countFavorities'))
           .value;
 
   final _$currentCocktailsAtom = Atom(name: 'CocktailStore.currentCocktails');
@@ -36,21 +43,6 @@ mixin _$_CocktailImpl on CocktailStore, Store {
   set currentCocktails(List<CocktailDefinition> value) {
     _$currentCocktailsAtom.reportWrite(value, super.currentCocktails, () {
       super.currentCocktails = value;
-    });
-  }
-
-  final _$favoritiesAtom = Atom(name: 'CocktailStore.favorities');
-
-  @override
-  List<CocktailDefinition> get favorities {
-    _$favoritiesAtom.reportRead();
-    return super.favorities;
-  }
-
-  @override
-  set favorities(List<CocktailDefinition> value) {
-    _$favoritiesAtom.reportWrite(value, super.favorities, () {
-      super.favorities = value;
     });
   }
 
@@ -86,6 +78,51 @@ mixin _$_CocktailImpl on CocktailStore, Store {
     });
   }
 
+  final _$currentCocktailAtom = Atom(name: 'CocktailStore.currentCocktail');
+
+  @override
+  Cocktail get currentCocktail {
+    _$currentCocktailAtom.reportRead();
+    return super.currentCocktail;
+  }
+
+  @override
+  set currentCocktail(Cocktail value) {
+    _$currentCocktailAtom.reportWrite(value, super.currentCocktail, () {
+      super.currentCocktail = value;
+    });
+  }
+
+  final _$currentCocktailIdAtom = Atom(name: 'CocktailStore.currentCocktailId');
+
+  @override
+  String get currentCocktailId {
+    _$currentCocktailIdAtom.reportRead();
+    return super.currentCocktailId;
+  }
+
+  @override
+  set currentCocktailId(String value) {
+    _$currentCocktailIdAtom.reportWrite(value, super.currentCocktailId, () {
+      super.currentCocktailId = value;
+    });
+  }
+
+  final _$favoriteCocktailsAtom = Atom(name: 'CocktailStore.favoriteCocktails');
+
+  @override
+  List<CocktailDefinition> get favoriteCocktails {
+    _$favoriteCocktailsAtom.reportRead();
+    return super.favoriteCocktails;
+  }
+
+  @override
+  set favoriteCocktails(List<CocktailDefinition> value) {
+    _$favoriteCocktailsAtom.reportWrite(value, super.favoriteCocktails, () {
+      super.favoriteCocktails = value;
+    });
+  }
+
   final _$CocktailStoreActionController =
       ActionController(name: 'CocktailStore');
 
@@ -101,14 +138,50 @@ mixin _$_CocktailImpl on CocktailStore, Store {
   }
 
   @override
+  void addItemToFavorities(CocktailDefinition cocktail) {
+    final _$actionInfo = _$CocktailStoreActionController.startAction(
+        name: 'CocktailStore.addItemToFavorities');
+    try {
+      return super.addItemToFavorities(cocktail);
+    } finally {
+      _$CocktailStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void removeFromFavoritiesById(String id) {
+    final _$actionInfo = _$CocktailStoreActionController.startAction(
+        name: 'CocktailStore.removeFromFavoritiesById');
+    try {
+      return super.removeFromFavoritiesById(id);
+    } finally {
+      _$CocktailStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void addToFavoritiesByCocktail(Cocktail cocktail) {
+    final _$actionInfo = _$CocktailStoreActionController.startAction(
+        name: 'CocktailStore.addToFavoritiesByCocktail');
+    try {
+      return super.addToFavoritiesByCocktail(cocktail);
+    } finally {
+      _$CocktailStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 currentCocktails: ${currentCocktails},
-favorities: ${favorities},
 currentCategory: ${currentCategory},
 fetchCocktailsFuture: ${fetchCocktailsFuture},
+currentCocktail: ${currentCocktail},
+currentCocktailId: ${currentCocktailId},
+favoriteCocktails: ${favoriteCocktails},
+hasResults: ${hasResults},
 favoritiesIds: ${favoritiesIds},
-hasResults: ${hasResults}
+countFavorities: ${countFavorities}
     ''';
   }
 }

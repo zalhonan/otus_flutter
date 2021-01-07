@@ -20,7 +20,7 @@ class CocktailDefinition {
   final String id;
   final String name;
   final String drinkThumbUrl;
-  final bool isFavourite;
+  bool isFavourite;
 
   CocktailDefinition({
     @required this.id,
@@ -28,4 +28,12 @@ class CocktailDefinition {
     @required this.drinkThumbUrl,
     @required this.isFavourite,
   });
+
+  void setFav() {
+    isFavourite = true;
+  }
+
+  void setUnfav() {
+    isFavourite = false;
+  }
 }

@@ -44,7 +44,7 @@ class AsyncCocktailRepository {
 
   // changed Future<Iterable<CocktailDefinition>> to Future<List<CocktailDefinition>>
   Future<List<CocktailDefinition>> fetchCocktailsByCocktailCategory(
-      CocktailCategory category) async {
+      CocktailCategory category, List<String> favoritiesIds) async {
     var result = <CocktailDefinition>[];
 
     final url =
@@ -66,8 +66,7 @@ class AsyncCocktailRepository {
       for (final dto in dtos) {
         result.add(CocktailDefinition(
           id: dto.idDrink,
-          isFavourite: false,
-          /*  TODO: is Favorite field fetching  */
+          isFavourite: favoritiesIds.contains(dto.idDrink) ? true : false,
           name: dto.strDrink,
           drinkThumbUrl: dto.strDrinkThumb,
         ));

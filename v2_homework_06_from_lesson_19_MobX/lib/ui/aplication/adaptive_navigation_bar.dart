@@ -2,9 +2,9 @@ import 'package:cocktail_app/ui/pages/favorite_cocktails_page.dart';
 import 'package:cocktail_app/ui/pages/filter_results_page.dart';
 import 'package:cocktail_app/ui/pages/random_cocktail_page.dart';
 import 'package:cocktail_app/ui/style/custom_colors.dart';
-import 'package:cocktail_app/ui/style/svg_icons.dart';
 import 'package:cocktail_app/core/models.dart';
 import 'package:flutter/material.dart';
+import 'package:cocktail_app/ui/style/svg_icons.dart';
 
 import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -43,6 +43,7 @@ class _ApplicationNavigationBarState extends State<ApplicationNavigationBar>
       color: CustomColors.background,
       child: TabBar(
         controller: _tabController,
+        // в целях совместимости в Web: SvgIcons заменены на FontAwesome
         tabs: [
           Tab(
               icon: SvgIcons.cocktails(_currentSelectedItem == 0

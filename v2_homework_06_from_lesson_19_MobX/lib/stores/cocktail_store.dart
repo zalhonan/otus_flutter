@@ -15,27 +15,15 @@ abstract class CocktailStore with Store {
 
   final repository = AsyncCocktailRepository();
 
+  //работа со списком коктейлей по категориям
+
   //лист текущих запрошенных коктейлей CocktailDefinition
   @observable
   List<CocktailDefinition> currentCocktails = [];
 
-  //лист избранного
-  @observable
-  List<CocktailDefinition> favorities = [];
-
   //текущая категория коктейлей на странице "фильтр"
   @observable
   CocktailCategory currentCategory = CocktailCategory.ordinaryDrink;
-
-  //computed - список ID коктейлей в избранном
-  @computed
-  List<String> get favoritiesIds {
-    List<String> res = [];
-    for (CocktailDefinition currentCocktail in favorities) {
-      res.add(currentCocktail.id);
-    }
-    return res;
-  }
 
   //пустой лист для сравнения
   static ObservableFuture<List<CocktailDefinition>> emptyCocktailList =
@@ -54,7 +42,8 @@ abstract class CocktailStore with Store {
 
   //запрос к сети - коктейли по текущей категории
   Future<List<CocktailDefinition>> fetchCocktails() async {
-    final future = repository.fetchCocktailsByCocktailCategory(currentCategory);
+    final future = repository.fetchCocktailsByCocktailCategory(
+        currentCategory, favoritiesIds);
     fetchCocktailsFuture = ObservableFuture(future);
     return currentCocktails = await future;
   }
@@ -67,11 +56,59 @@ abstract class CocktailStore with Store {
     fetchCocktails();
   }
 
-  //запрос к сети по полному инфо по коктейлю
+  //TODO: переделка по MobX по полному инфо коктейля - cock_detail_loader_page + cock_detail_page
+  @observable
+  Cocktail currentCocktail = Cocktail(
+      id: null,
+      name: null,
+      instruction: null,
+      category: null,
+      glassType: null,
+      cocktailType: null,
+      ingredients: null,
+      drinkThumbUrl: null,
+      isFavourite: null);
 
-  //добавить коктейль в избранное
-  //удалить кок из избранного по ID - removeFromFavoritiesById
-  //computed - длина избранного
-  //проверка есть ли кок в избранном
+  @observable
+  String currentCocktailId = '';
 
+  //TODO: Работа по рандомному коктейлю - random_cock_page
+
+  // Все, что связано с избранным
+
+  //лист избранного
+  @observable
+  List<CocktailDefinition> favoriteCocktails = [];
+
+  //computed - список ID коктейлей в избранном
+  @computed
+  List<String> get favoritiesIds {
+    List<String> res = [];
+    for (CocktailDefinition currentCocktail in favoriteCocktails) {
+      res.add(currentCocktail.id);
+    }
+    return res;
+  }
+
+  @action
+  void addItemToFavorities(CocktailDefinition cocktail) =>
+      favoriteCocktails.add(cocktail);
+
+  @action
+  void removeFromFavoritiesById(String id) =>
+      favoriteCocktails.removeWhere((element) => element.id == id);
+
+  // добавляет в фав по коктейлю, на лету конвертируя в cocktailDefinition
+  @action
+  void addToFavoritiesByCocktail(Cocktail cocktail) {
+    CocktailDefinition currentCocktail = CocktailDefinition(
+        id: cocktail.id,
+        name: cocktail.name,
+        drinkThumbUrl: cocktail.drinkThumbUrl,
+        isFavourite: true);
+    favoriteCocktails.add(currentCocktail);
+  }
+
+  @computed
+  int get countFavorities => favoriteCocktails.length;
 }

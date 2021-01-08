@@ -1,5 +1,7 @@
 import 'package:cocktail_app/core/models.dart';
 import 'package:mobx/mobx.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 part 'cocktail_store.g.dart';
 
@@ -131,12 +133,36 @@ abstract class CocktailStore with Store {
   }
 
   @action
-  void addItemToFavorities(CocktailDefinition cocktail) =>
-      favoriteCocktails.add(cocktail);
+  void addItemToFavorities(CocktailDefinition cocktail) {
+    favoriteCocktails.add(cocktail);
+    _saveToStorage();
+  }
 
   @action
-  void removeFromFavoritiesById(String id) =>
-      favoriteCocktails.removeWhere((element) => element.id == id);
+  void removeFromFavoritiesById(String id) {
+    favoriteCocktails.removeWhere((element) => element.id == id);
+    _saveToStorage();
+  }
+
+  @action
+  void getFromStorage() {
+    _getFromStorage();
+  }
+
+  //забирает из хранилища список
+  _getFromStorage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final favCocks = prefs.getString('myCocks') ?? "";
+    favoriteCocktails = CocktailDefinition.decode(favCocks);
+  }
+
+  //переводит фаворитис в строку и сохраняет
+  _saveToStorage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("myCocks", CocktailDefinition.encode(favoriteCocktails));
+    //TODO: убрать
+//    print("shared prefs here yo ${prefs.getString("myCocks")}");
+  }
 
   // добавляет в фав по коктейлю, на лету конвертируя в cocktailDefinition
   @action

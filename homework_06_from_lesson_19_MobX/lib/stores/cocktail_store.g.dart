@@ -201,6 +201,17 @@ mixin _$_CocktailImpl on CocktailStore, Store {
   }
 
   @override
+  void getFromStorage() {
+    final _$actionInfo = _$CocktailStoreActionController.startAction(
+        name: 'CocktailStore.getFromStorage');
+    try {
+      return super.getFromStorage();
+    } finally {
+      _$CocktailStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void addToFavoritiesByCocktail(Cocktail cocktail) {
     final _$actionInfo = _$CocktailStoreActionController.startAction(
         name: 'CocktailStore.addToFavoritiesByCocktail');

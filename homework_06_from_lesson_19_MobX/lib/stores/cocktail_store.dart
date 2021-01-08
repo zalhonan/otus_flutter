@@ -160,8 +160,6 @@ abstract class CocktailStore with Store {
   _saveToStorage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("myCocks", CocktailDefinition.encode(favoriteCocktails));
-    //TODO: убрать
-//    print("shared prefs here yo ${prefs.getString("myCocks")}");
   }
 
   // добавляет в фав по коктейлю, на лету конвертируя в cocktailDefinition

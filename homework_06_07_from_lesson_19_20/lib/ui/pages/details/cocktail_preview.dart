@@ -54,7 +54,7 @@ class CocktailPreview extends StatelessWidget {
                     for (IngredientDefinition ingr
                         in cocktail.ingredients.toList()) {
                       ingridients +=
-                          "${ingr.ingredientName} - ${ingr.measure} \n";
+                          "${ingr.ingredientName}: ${ingr.measure.toString()} \n";
                     }
 
                     Share.share(
